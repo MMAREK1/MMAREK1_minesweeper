@@ -36,15 +36,15 @@ public class ConsoleUI {
         do {
             update();
             processInput();
-            throw new UnsupportedOperationException("Resolve the game state - winning or loosing condition.");
-        } while(true);
+            //throw new UnsupportedOperationException("Resolve the game state - winning or loosing condition.");
+        } while(false);
     }
     
     /**
      * Updates user interface - prints the field.
      */
     public void update() {
-        throw new UnsupportedOperationException("Method update not yet implemented");
+        //throw new UnsupportedOperationException("Method update not yet implemented");
     }
     
     /**
@@ -52,6 +52,6 @@ public class ConsoleUI {
      * Reads line from console and does the action on a playing field according to input string.
      */
     private void processInput() {
-        throw new UnsupportedOperationException("Method processInput not yet implemented");
+        //throw new UnsupportedOperationException("Method processInput not yet implemented");
     }
 }
