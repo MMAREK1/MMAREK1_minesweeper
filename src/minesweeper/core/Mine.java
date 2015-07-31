@@ -9,7 +9,7 @@ public class Mine extends Tile {
     public String toString() {
     	// TODO Auto-generated method stub
 		if (this.getState() == State.OPEN)
-			return "* ";
+			return "X";
 		else
 			return super.toString();
     }

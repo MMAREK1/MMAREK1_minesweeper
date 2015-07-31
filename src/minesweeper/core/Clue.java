@@ -30,7 +30,7 @@ public class Clue extends Tile {
 	public String toString() {
 		// TODO Auto-generated method stub
 		if (this.getState() == State.OPEN)
-			return value + " ";
+			return value + "";
 		else
 			return super.toString();
 	}

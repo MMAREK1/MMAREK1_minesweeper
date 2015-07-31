@@ -3,12 +3,15 @@ package minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import minesweeper.UserInterface;
 import minesweeper.core.Field;
+import minesweeper.core.Tile;
 
 /**
  * Console user interface.
  */
-public class ConsoleUI {
+public class ConsoleUI implements UserInterface {
     /** Playing field. */
     private Field field;
     
@@ -27,11 +30,11 @@ public class ConsoleUI {
         }
     }
     
-    /**
-     * Starts the game.
-     * @param field field of mines and clues
-     */
-    public void newGameStarted(Field field) {
+    /* (non-Javadoc)
+	 * @see minesweeper.consoleui.UserInterface#newGameStarted(minesweeper.core.Field)
+	 */
+    @Override
+	public void newGameStarted(Field field) {
         this.field = field;
         do {
             update();
@@ -40,11 +43,25 @@ public class ConsoleUI {
         } while(false);
     }
     
-    /**
-     * Updates user interface - prints the field.
-     */
-    public void update() {
-        //throw new UnsupportedOperationException("Method update not yet implemented");
+    /* (non-Javadoc)
+	 * @see minesweeper.consoleui.UserInterface#update()
+	 */
+    @Override
+	public void update() {
+    	System.out.printf("%4s"," ");
+    	for(int i=0;i<field.getColumnCount();i++){
+    			System.out.printf("%4s",i);
+    	}
+    	System.out.println();
+    		
+    	for (int row = 0; row < field.getRowCount(); row++) {
+    		System.out.printf("%4c",row+65);
+			for (int column = 0; column < field.getColumnCount(); column++) {
+				System.out.printf("%4s",field.getTile(row,column));
+			}
+			System.out.println();
+		}
+    
     }
     
     /**

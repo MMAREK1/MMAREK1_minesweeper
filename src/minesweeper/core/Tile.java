@@ -52,9 +52,9 @@ public abstract class Tile {
 	@Override
 	public String toString() {
 		if (this.getState() == State.CLOSED)
-			return "_ ";
+			return "-";
 		else
-			return "M ";
+			return "M";
 
 	}
 

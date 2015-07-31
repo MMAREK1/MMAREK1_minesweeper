@@ -1,5 +1,7 @@
 package minesweeper.core;
 
+import minesweeper.consoleui.ConsoleUI;
+
 /**
  * Field represents playing field and game logic.
  */
@@ -47,13 +49,6 @@ public class Field {
 
 		// generate the field content
 		generate();
-		
-		for (int row = 0; row < rowCount; row++) {
-			for (int column = 0; column < columnCount; column++) {
-				System.out.print(tiles[row][column]);
-			}
-			System.out.println();
-		}
 	}
 
 	/**
@@ -189,7 +184,7 @@ public class Field {
 	 * @param column - column number.
 	 * @return tiles - representant of Tile	            
 	 * */
-	Tile getTile(int row, int column) {
+	public Tile getTile(int row, int column) {
 		return tiles[row][column];
 	}
 	@Override

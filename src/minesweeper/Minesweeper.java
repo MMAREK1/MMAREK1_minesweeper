@@ -1,6 +1,7 @@
 package minesweeper;
 
 import minesweeper.consoleui.ConsoleUI;
+import minesweeper.UserInterface;
 import minesweeper.core.Field;
 
 /**
@@ -8,7 +9,7 @@ import minesweeper.core.Field;
  */
 public class Minesweeper {
     /** User interface. */
-    private ConsoleUI userInterface;
+    private UserInterface userInterface;
  
     /**
      * Constructor.
@@ -16,7 +17,7 @@ public class Minesweeper {
     private Minesweeper() {
         userInterface = new ConsoleUI();
         
-        Field field = new Field(9, 9, 10);
+        Field field = new Field(10, 10, 10);
         userInterface.newGameStarted(field);
     }
 
