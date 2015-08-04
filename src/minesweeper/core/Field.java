@@ -51,6 +51,16 @@ public class Field {
 		generate();
 	}
 
+	public void openMine() {
+		for (int row = 0; row < getRowCount(); row++) {
+			for (int column = 0; column < getColumnCount(); column++) {
+				if ((tiles[row][column].getState() == State.CLOSED) && (tiles[row][column] instanceof Mine)) {
+					openTile(row, column);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Opens tile at specified indeces.
 	 *
@@ -59,6 +69,7 @@ public class Field {
 	 * @param column
 	 *            column number
 	 */
+
 	public void openTile(int row, int column) {
 		Tile tile = tiles[row][column];
 		if (tile.getState() == Tile.State.CLOSED) {
@@ -66,10 +77,11 @@ public class Field {
 			if (tile instanceof Mine) {
 				state = GameState.FAILED;
 				return;
-			}
-			else
-			{
-				openAdjacentMines(row, column);
+			} else {
+				Clue clue = (Clue) tile;
+				if (clue.getValue() == 0) {
+					openAdjacentTiles(row, column);
+				}
 			}
 
 			if (isSolved()) {
@@ -82,8 +94,10 @@ public class Field {
 	/**
 	 * Marks tile at specified indeces.
 	 *
-	 * @param row - row number
-	 * @param column - column number
+	 * @param row
+	 *            - row number
+	 * @param column
+	 *            - column number
 	 */
 	public void markTile(int row, int column) {
 		Tile tile = tiles[row][column];
@@ -97,9 +111,8 @@ public class Field {
 	}
 
 	/**
-	 * Generates playing field.
-	 * Generate Mines by random generating position of Mine
-	 * Fill empty Tile of field with Clue Tile
+	 * Generates playing field. Generate Mines by random generating position of
+	 * Mine Fill empty Tile of field with Clue Tile
 	 */
 	private void generate() {
 		int positionX;
@@ -124,40 +137,40 @@ public class Field {
 
 	/**
 	 * Returns true if game is solved, false otherwise.
+	 * 
 	 * @return true if game is solved, false otherwise
 	 */
 	private boolean isSolved() {
-		return getColumnCount()*getRowCount()-getNumberOf(State.OPEN)==getMineCount();		
+		return getColumnCount() * getRowCount() - getNumberOf(State.OPEN) == getMineCount();
 	}
+
 	/**
 	 * count Tiles with chosen state
-	 * @param state - chosen state
+	 * 
+	 * @param state
+	 *            - chosen state
 	 * @return number - count Tiles
 	 */
-	int getNumberOf(Tile.State state)
-	{
+	int getNumberOf(Tile.State state) {
 		int number = 0;
-		for(int row=0;row<getRowCount();row++)
-		{
-			for(int column=0;column<getColumnCount();column++)
-			{
-				if(tiles[row][column].getState()==state)
-				{
+		for (int row = 0; row < getRowCount(); row++) {
+			for (int column = 0; column < getColumnCount(); column++) {
+				if (tiles[row][column].getState() == state) {
 					number++;
 				}
 			}
 		}
 		return number;
 	}
-	private void openAdjacentMines(int row, int column) {
-		if (countAdjacentMines(row, column)==0) {
-		for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
-			int actRow = row + rowOffset;
-			if (actRow >= 0 && actRow < getRowCount()) {
-				for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
-					int actColumn = column + columnOffset;
-					if (actColumn >= 0 && actColumn < getColumnCount()) {
-						
+
+	private void openAdjacentTiles(int row, int column) {
+		if (countAdjacentMines(row, column) == 0) {
+			for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+				int actRow = row + rowOffset;
+				if (actRow >= 0 && actRow < getRowCount()) {
+					for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
+						int actColumn = column + columnOffset;
+						if (actColumn >= 0 && actColumn < getColumnCount()) {
 							openTile(actRow, actColumn);
 						}
 					}
@@ -170,8 +183,11 @@ public class Field {
 	/**
 	 * Returns number of adjacent mines for a tile at specified position in the
 	 * field.
-	 * @param row - row number.
-	 * @param column - column number.
+	 * 
+	 * @param row
+	 *            - row number.
+	 * @param column
+	 *            - column number.
 	 * @return number of adjacent mines.
 	 */
 	private int countAdjacentMines(int row, int column) {
@@ -192,42 +208,56 @@ public class Field {
 
 		return count;
 	}
-	
-	/** return value of Mine 
+
+	/**
+	 * return value of Mine
+	 * 
 	 * @return mineCount - number of Mine in field
-	 * */
+	 */
 	public int getMineCount() {
 		return mineCount;
 	}
-	
-	/** return value of Column 
+
+	/**
+	 * return value of Column
+	 * 
 	 * @return columnCount - number of column in field
-	 * */
+	 */
 	public int getColumnCount() {
 		return columnCount;
 	}
-	
-	/** return value of Row 
+
+	/**
+	 * return value of Row
+	 * 
 	 * @return rowCount - number of row in field
-	 * */
+	 */
 	public int getRowCount() {
 		return rowCount;
 	}
-	
-	/** return state of game 
-	 * @return state - state of game 
-	 * */
+
+	/**
+	 * return state of game
+	 * 
+	 * @return state - state of game
+	 */
 	public GameState getState() {
 		return state;
 	}
-	/** return Tile at specific position 
-	 * @param row - row number.
-	 * @param column - column number.
-	 * @return tiles - representant of Tile	            
-	 * */
+
+	/**
+	 * return Tile at specific position
+	 * 
+	 * @param row
+	 *            - row number.
+	 * @param column
+	 *            - column number.
+	 * @return tiles - representant of Tile
+	 */
 	public Tile getTile(int row, int column) {
 		return tiles[row][column];
 	}
+
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
