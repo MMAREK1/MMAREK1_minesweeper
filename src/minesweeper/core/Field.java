@@ -1,6 +1,6 @@
 package minesweeper.core;
 
-import minesweeper.consoleui.ConsoleUI;
+import minesweeper.core.Tile.State;
 
 /**
  * Field represents playing field and game logic.
@@ -67,6 +67,10 @@ public class Field {
 				state = GameState.FAILED;
 				return;
 			}
+			else
+			{
+				openAdjacentMines(row, column);
+			}
 
 			if (isSolved()) {
 				state = GameState.SOLVED;
@@ -123,7 +127,44 @@ public class Field {
 	 * @return true if game is solved, false otherwise
 	 */
 	private boolean isSolved() {
-		throw new UnsupportedOperationException("Method isSolved not yet implemented");
+		return getColumnCount()*getRowCount()-getNumberOf(State.OPEN)==getMineCount();		
+	}
+	/**
+	 * count Tiles with chosen state
+	 * @param state - chosen state
+	 * @return number - count Tiles
+	 */
+	int getNumberOf(Tile.State state)
+	{
+		int number = 0;
+		for(int row=0;row<getRowCount();row++)
+		{
+			for(int column=0;column<getColumnCount();column++)
+			{
+				if(tiles[row][column].getState()==state)
+				{
+					number++;
+				}
+			}
+		}
+		return number;
+	}
+	private void openAdjacentMines(int row, int column) {
+		if (countAdjacentMines(row, column)==0) {
+		for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+			int actRow = row + rowOffset;
+			if (actRow >= 0 && actRow < getRowCount()) {
+				for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
+					int actColumn = column + columnOffset;
+					if (actColumn >= 0 && actColumn < getColumnCount()) {
+						
+							openTile(actRow, actColumn);
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -176,7 +217,7 @@ public class Field {
 	/** return state of game 
 	 * @return state - state of game 
 	 * */
-	GameState getState() {
+	public GameState getState() {
 		return state;
 	}
 	/** return Tile at specific position 

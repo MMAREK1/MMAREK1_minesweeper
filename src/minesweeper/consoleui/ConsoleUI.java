@@ -3,15 +3,17 @@ package minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
-import minesweeper.core.Tile;
+import minesweeper.core.GameState;
 
 /**
  * Console user interface.
  */
-public class ConsoleUI implements UserInterface {
+public class ConsoleUI implements  UserInterface {
     /** Playing field. */
     private Field field;
     
@@ -33,14 +35,26 @@ public class ConsoleUI implements UserInterface {
     /* (non-Javadoc)
 	 * @see minesweeper.consoleui.UserInterface#newGameStarted(minesweeper.core.Field)
 	 */
-    @Override
+    /* (non-Javadoc)
+	 * @see minesweeper.consoleui.UserInterface#newGameStarted(minesweeper.core.Field)
+	 */
+
+	@Override
 	public void newGameStarted(Field field) {
         this.field = field;
         do {
             update();
             processInput();
-            //throw new UnsupportedOperationException("Resolve the game state - winning or loosing condition.");
-        } while(false);
+            if(field.getState() == GameState.SOLVED){
+            	System.out.println("Vyhral si");
+            	System.exit(0);
+            }
+            if(field.getState() == GameState.FAILED)
+            {
+            	System.out.println("Prehral si");
+            	System.exit(0);
+            }
+        } while(true);
     }
     
     /* (non-Javadoc)
@@ -69,6 +83,33 @@ public class ConsoleUI implements UserInterface {
      * Reads line from console and does the action on a playing field according to input string.
      */
     private void processInput() {
-        //throw new UnsupportedOperationException("Method processInput not yet implemented");
+        String action = readLine();
+        action=action.toUpperCase();
+        if(action.length()==1)
+        {
+        	if(action.charAt(0)=='X')
+        	{
+        		System.out.println("you end game");
+        		System.exit(0);
+        	}
+        }else
+        {
+
+        	Pattern pattern = Pattern.compile("([MO])([A-J])([0-9])");
+        	Matcher matcher = pattern.matcher(action);
+        	if(matcher.matches())
+        	{
+        		int column=Integer.parseInt(matcher.group(3));
+        		int row=matcher.group(2).charAt(0)-'A';
+        		if(matcher.group(1).charAt(0)=='M')
+        		{
+        			field.markTile(row,column);
+        		}
+        		else
+        		{
+        			field.openTile(row,column);
+        		}
+        	}
+        }
     }
 }
