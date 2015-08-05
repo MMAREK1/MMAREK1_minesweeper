@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
 import minesweeper.core.GameState;
+import minesweeper.core.Tile.State;
 
 /**
  * Console user interface.
@@ -64,18 +65,25 @@ public class ConsoleUI implements UserInterface {
 			}
 		} while (true);
 	}
+	
+	public int getRemainingMineCount(){
+		int remaining = field.getMineCount()-field.getNumberOf(State.MARKED);
+		return remaining;
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see minesweeper.consoleui.UserInterface#update()
 	 */
-	
-	//http://stackoverflow.com/questions/5757311/change-color-in-java-eclipse-console
+
+	// http://stackoverflow.com/questions/5757311/change-color-in-java-eclipse-console
 	@Override
 	public void update() {
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb);
+		formatter.format("%s", "Number of remaining mine:");
+		formatter.format("%4s\n", getRemainingMineCount());
 		formatter.format("%4s", " ");
 		for (int i = 0; i < field.getColumnCount(); i++) {
 			formatter.format("%4s", i);
@@ -97,10 +105,58 @@ public class ConsoleUI implements UserInterface {
 			for (int column = 0; column < field.getColumnCount(); column++) {
 				formatter.format("%4s", field.getTile(row, column));
 			}
+			if (row < 26) {
+				formatter.format("%4c", row + 65);
+			} else {
+				int rowNumber = row;
+				rowLabel = Character.toString((char) (Math.floor(rowNumber / 26) + 64))
+						+ Character.toString((char) (rowNumber % 26 + 65));
+				formatter.format("%4s", rowLabel);
+			}
 			formatter.format("%4s", "\n");
 		}
+		formatter.format("%4s", " ");
+		for (int i = 0; i < field.getColumnCount(); i++) {
+			formatter.format("%4s", i);
+		}
 		System.out.println(sb);
+		formatter.close();
+	}
 
+	void handleInput(String input) throws WrongFormatException {
+		if (input.length() == 1) {
+			if (input.charAt(0) == 'X') {
+				System.out.println("you end game");
+				System.exit(0);
+			}
+		} else {
+
+			Pattern pattern = Pattern.compile("([MO])([A-Z]+)([0-9]+)");
+			Matcher matcher = pattern.matcher(input);
+			if (matcher.matches()) {
+				int column = Integer.parseInt(matcher.group(3));
+				int row = 0;
+
+				String strRow = matcher.group(2);
+				int srLen = strRow.length() - 1;
+				
+				for (int i = srLen; i >= 0; i--) {
+					int c = strRow.charAt(i) - 'A';
+					row += (i == srLen) ? c : (c + 1) * Math.pow(26, srLen);
+				}
+				if(row>=field.getRowCount()||column>=field.getColumnCount())
+				{
+					throw new WrongFormatException("Out of field");
+				}
+				if ("M".equals(matcher.group(1))) {
+					field.markTile(row, column);
+				} else {
+					field.openTile(row, column);
+				}
+			} else {
+				throw new WrongFormatException("Wrong Input");
+			}
+		}
 	}
 
 	/**
@@ -110,33 +166,10 @@ public class ConsoleUI implements UserInterface {
 	private void processInput() {
 		String action = readLine();
 		action = action.toUpperCase();
-		if (action.length() == 1) {
-			if (action.charAt(0) == 'X') {
-				System.out.println("you end game");
-				System.exit(0);
-			}
-		} else {
-
-			Pattern pattern = Pattern.compile("([MO])([A-Z]+)([0-9]+)");
-			Matcher matcher = pattern.matcher(action);
-			if (matcher.matches()) {
-				int column = Integer.parseInt(matcher.group(3));
-				int row = 0;
-
-				String strRow = matcher.group(2);
-				int srLen = strRow.length() - 1;
-
-				for (int i = srLen; i >= 0; i--) {
-					int c = strRow.charAt(i) - 'A';
-					row += (i == srLen) ? c : (c + 1) * Math.pow(26, srLen);
-				}
-
-				if ("M".equals(matcher.group(1))) {
-					field.markTile(row, column);
-				} else {
-					field.openTile(row, column);
-				}
-			}
+		try {
+			handleInput(action);
+		} catch (WrongFormatException ex) {
+			System.out.println(ex.getMessage());
 		}
 	}
 }

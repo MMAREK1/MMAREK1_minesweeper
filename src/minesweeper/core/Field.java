@@ -33,13 +33,13 @@ public class Field {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param rowCount
-	 *            row count
+	 *            - row count
 	 * @param columnCount
-	 *            column count
+	 *            - column count
 	 * @param mineCount
-	 *            mine count
+	 *            - mine count
 	 */
 	public Field(int rowCount, int columnCount, int mineCount) {
 		this.rowCount = rowCount;
@@ -54,7 +54,8 @@ public class Field {
 	public void openMine() {
 		for (int row = 0; row < getRowCount(); row++) {
 			for (int column = 0; column < getColumnCount(); column++) {
-				if ((tiles[row][column].getState() == State.CLOSED) && (tiles[row][column] instanceof Mine)) {
+				Tile tile = tiles[row][column];
+				if ((tile.getState() == State.CLOSED) && (tile instanceof Mine)) {
 					openTile(row, column);
 				}
 			}
@@ -63,11 +64,11 @@ public class Field {
 
 	/**
 	 * Opens tile at specified indeces.
-	 *
+	 * 
 	 * @param row
-	 *            row number
+	 *            - row number
 	 * @param column
-	 *            column number
+	 *            - column number
 	 */
 
 	public void openTile(int row, int column) {
@@ -92,8 +93,8 @@ public class Field {
 	}
 
 	/**
-	 * Marks tile at specified indeces.
-	 *
+	 * Marks tile at specified indexes.
+	 * 
 	 * @param row
 	 *            - row number
 	 * @param column
@@ -151,7 +152,7 @@ public class Field {
 	 *            - chosen state
 	 * @return number - count Tiles
 	 */
-	int getNumberOf(Tile.State state) {
+	public int getNumberOf(Tile.State state) {
 		int number = 0;
 		for (int row = 0; row < getRowCount(); row++) {
 			for (int column = 0; column < getColumnCount(); column++) {
@@ -163,7 +164,7 @@ public class Field {
 		return number;
 	}
 
-	private void openAdjacentTiles(int row, int column) {
+	public void openAdjacentTiles(int row, int column) {
 		if (countAdjacentMines(row, column) == 0) {
 			for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
 				int actRow = row + rowOffset;
@@ -190,7 +191,7 @@ public class Field {
 	 *            - column number.
 	 * @return number of adjacent mines.
 	 */
-	private int countAdjacentMines(int row, int column) {
+	public int countAdjacentMines(int row, int column) {
 		int count = 0;
 		for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
 			int actRow = row + rowOffset;
