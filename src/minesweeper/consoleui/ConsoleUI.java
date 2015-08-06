@@ -7,6 +7,7 @@ import java.util.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import minesweeper.Minesweeper;
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
 import minesweeper.core.GameState;
@@ -18,9 +19,6 @@ import minesweeper.core.Tile.State;
 public class ConsoleUI implements UserInterface {
 	/** Playing field. */
 	private Field field;
-	/** setting color */
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_RED = "\u001B[31m";
 
 	/** Input reader. */
 	private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -56,6 +54,7 @@ public class ConsoleUI implements UserInterface {
 				update();
 				System.out.println("You win !!!");
 				System.exit(0);
+				
 			}
 			if (field.getState() == GameState.FAILED) {
 				field.openMine();
@@ -65,9 +64,9 @@ public class ConsoleUI implements UserInterface {
 			}
 		} while (true);
 	}
-	
-	public int getRemainingMineCount(){
-		int remaining = field.getMineCount()-field.getNumberOf(State.MARKED);
+
+	public int getRemainingMineCount() {
+		int remaining = field.getMineCount() - field.getNumberOf(State.MARKED);
 		return remaining;
 	}
 
@@ -77,13 +76,16 @@ public class ConsoleUI implements UserInterface {
 	 * @see minesweeper.consoleui.UserInterface#update()
 	 */
 
-	// http://stackoverflow.com/questions/5757311/change-color-in-java-eclipse-console
+
 	@Override
 	public void update() {
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb);
 		formatter.format("%s", "Number of remaining mine:");
-		formatter.format("%4s\n", getRemainingMineCount());
+		formatter.format("%4s", getRemainingMineCount());
+		formatter.format("%s", "      Time:");
+		Minesweeper.getInstance();
+		formatter.format("%4s\n", Minesweeper.getPlayingSeconds());
 		formatter.format("%4s", " ");
 		for (int i = 0; i < field.getColumnCount(); i++) {
 			formatter.format("%4s", i);
@@ -139,13 +141,12 @@ public class ConsoleUI implements UserInterface {
 
 				String strRow = matcher.group(2);
 				int srLen = strRow.length() - 1;
-				
+
 				for (int i = srLen; i >= 0; i--) {
 					int c = strRow.charAt(i) - 'A';
 					row += (i == srLen) ? c : (c + 1) * Math.pow(26, srLen);
 				}
-				if(row>=field.getRowCount()||column>=field.getColumnCount())
-				{
+				if (row >= field.getRowCount() || column >= field.getColumnCount()) {
 					throw new WrongFormatException("Out of field");
 				}
 				if ("M".equals(matcher.group(1))) {

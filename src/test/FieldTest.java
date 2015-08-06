@@ -154,42 +154,47 @@ public class FieldTest {
 	@Test
 	public void countAdjacentMines() {
 		Field field = new Field(ROWS, COLUMNS, MINES);
-		int count = 0;
-		int row = 8;
-		int column = 9;
-		if (row > 0 && column > 0)
-			if (field.getTile(row - 1, column - 1) instanceof Mine) {
-				count++;
-			}
-		if (column > 0)
-			if (field.getTile(row, column - 1) instanceof Mine) {
-				count++;
-			}
-		if (row < field.getRowCount() - 1 && column > 0)
-			if (field.getTile(row + 1, column - 1) instanceof Mine) {
-				count++;
-			}
-		if (row > 0 && column < field.getColumnCount() - 1)
-			if (field.getTile(row - 1, column + 1) instanceof Mine) {
-				count++;
-			}
-		if (column < field.getColumnCount() - 1)
-			if (field.getTile(row, column + 1) instanceof Mine) {
-				count++;
-			}
-		if (row < field.getRowCount() - 1 && column < field.getColumnCount() - 1)
-			if (field.getTile(row + 1, column + 1) instanceof Mine) {
-				count++;
-			}
-		if (row > 0)
-			if (field.getTile(row - 1, column) instanceof Mine) {
-				count++;
-			}
-		if (row < field.getRowCount() - 1)
-			if (field.getTile(row + 1, column) instanceof Mine) {
-				count++;
-			}
-		assertEquals(count, field.countAdjacentMines(row, column));
 
+		for (int row = 0; row < field.getRowCount(); row++) {
+			for (int column = 0; column < field.getColumnCount(); column++) {
+				if (field.getTile(row, column) instanceof Mine) {
+				} else {
+					int count = 0;
+					if (row > 0 && column > 0)
+						if (field.getTile(row - 1, column - 1) instanceof Mine) {
+							count++;
+						}
+					if (column > 0)
+						if (field.getTile(row, column - 1) instanceof Mine) {
+							count++;
+						}
+					if (row < field.getRowCount() - 1 && column > 0)
+						if (field.getTile(row + 1, column - 1) instanceof Mine) {
+							count++;
+						}
+					if (row > 0 && column < field.getColumnCount() - 1)
+						if (field.getTile(row - 1, column + 1) instanceof Mine) {
+							count++;
+						}
+					if (column < field.getColumnCount() - 1)
+						if (field.getTile(row, column + 1) instanceof Mine) {
+							count++;
+						}
+					if (row < field.getRowCount() - 1 && column < field.getColumnCount() - 1)
+						if (field.getTile(row + 1, column + 1) instanceof Mine) {
+							count++;
+						}
+					if (row > 0)
+						if (field.getTile(row - 1, column) instanceof Mine) {
+							count++;
+						}
+					if (row < field.getRowCount() - 1)
+						if (field.getTile(row + 1, column) instanceof Mine) {
+							count++;
+						}
+					assertEquals(count, field.countAdjacentMines(row, column));
+				}
+			}
+		}
 	}
 }
