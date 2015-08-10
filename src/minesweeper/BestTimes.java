@@ -42,10 +42,10 @@ public class BestTimes implements Iterable<BestTimes.PlayerTime> {
 	 * @return a string representation of the object
 	 */
 	public String toString() {
-		Iterator<PlayerTime> it=iterator();
-		while(it.hasNext())
+		Iterator<PlayerTime> iterator=iterator();
+		while(iterator.hasNext())
 		{
-			PlayerTime pt=it.next();
+			PlayerTime pt=iterator.next();
 			f.format("%s",pt);
 		}
 		return f.toString();
@@ -96,7 +96,7 @@ public class BestTimes implements Iterable<BestTimes.PlayerTime> {
 		@Override
 		public String toString() {
 			StringBuilder stb = new StringBuilder();
-			stb.append(this.name).append(" : ").append(this.time);
+			stb.append(this.name).append(" : ").append(this.time).append("\n");
 			return stb.toString();
 		}
 

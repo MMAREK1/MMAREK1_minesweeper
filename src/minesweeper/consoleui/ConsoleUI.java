@@ -7,6 +7,7 @@ import java.util.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import minesweeper.BestTimes;
 import minesweeper.Minesweeper;
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
@@ -17,6 +18,7 @@ import minesweeper.core.Tile.State;
  * Console user interface.
  */
 public class ConsoleUI implements UserInterface {
+	private BestTimes bestTimes = new BestTimes();
 	/** Playing field. */
 	private Field field;
 
@@ -46,13 +48,16 @@ public class ConsoleUI implements UserInterface {
 	@Override
 	public void newGameStarted(Field field) {
 		this.field = field;
-		System.out.println("Hello player " + System.getProperty("user.name"));
+		String name = System.getProperty("user.name");
+		System.out.println("Hello player " + name);
 		do {
 			update();
 			processInput();
 			if (field.getState() == GameState.SOLVED) {
 				update();
+				bestTimes.addPlayerTime(name, (int)(System.currentTimeMillis()-Minesweeper.getStartMillis()));
 				System.out.println("You win !!!");
+				System.out.println(bestTimes.toString());
 				System.exit(0);
 				
 			}
