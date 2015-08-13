@@ -3,7 +3,6 @@ package minesweeper;
 import minesweeper.consoleui.ConsoleUI;
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
-import sun.security.jca.GetInstance.Instance;
 
 /**
  * Main application class.
