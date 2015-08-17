@@ -12,7 +12,7 @@ public class Minesweeper {
 	private UserInterface userInterface;
 	private static long startMillis;
 	private static Minesweeper instance;
-	private BestTimes bestTimes = new BestTimes();
+	public BestTimes bestTimes = new BestTimes();
 
 	public BestTimes getBestTimes() {
 		return bestTimes;
@@ -33,7 +33,7 @@ public class Minesweeper {
 		instance = this;
 		startMillis = getStartMillis();
 		userInterface = new ConsoleUI();
-		Field field = new Field(20, 20, 30);
+		Field field = new Field(10, 10, 3);
 		bestTimes.addPlayerTime("Fero", 145);
 		bestTimes.addPlayerTime("Jano", 45);
 		System.out.println(bestTimes.toString());

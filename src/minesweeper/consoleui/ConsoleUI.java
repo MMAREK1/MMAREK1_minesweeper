@@ -55,7 +55,7 @@ public class ConsoleUI implements UserInterface {
 			processInput();
 			if (field.getState() == GameState.SOLVED) {
 				update();
-				bestTimes.addPlayerTime(name, (int)(System.currentTimeMillis()-Minesweeper.getStartMillis()));
+				bestTimes.addPlayerTime(name, Minesweeper.getPlayingSeconds());
 				System.out.println("You win !!!");
 				System.out.println(bestTimes.toString());
 				System.exit(0);
