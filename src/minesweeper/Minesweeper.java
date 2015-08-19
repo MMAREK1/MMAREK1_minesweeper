@@ -18,6 +18,7 @@ public class Minesweeper {
 		return bestTimes;
 	}
 
+	
 	public static long getStartMillis() {
 		return startMillis;
 	}
